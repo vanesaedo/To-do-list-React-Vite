@@ -45,45 +45,272 @@ Just now, by clicking on the link showed by the console, you can be your project
 
 ![first browser Vite image](./img_readme/03_1st_vite_screen.png)
 
+1. 
+a. Create file FormInputTask.jsx. Its content: 
 
+```
+// rfce
+import React from 'react'
 
+import { useState } from 'react'
 
-
-
----------
-1. Haciendo uso de useState, 
-
-```import React, { useState } from "react";```
-
-At the top of the component file.
-
-crea una TODO list que contenga lo siguiente:
-
-1. Un formulario con input + botón
-
- a. Create FormInputTask.jsx file.
- b. Into this file write: 
-    ```
-    // Importa el hook useState
-    import React, { useState } from 'react';
-
-    // crea el formulario con un input y un botón
-    function FormInputTask() {
-    return <form action="">
-        <input type="text" />
-        <button onClick="">Add task</button>
+function FormInputTask ()  {
+    const [task, setTask] = useState('')
+    return (
+        <form>
+        <label>This is the field to add a new task:</label>
+        <div><input type="text" /></div>
+        <div><button onClick={() => setTask((task) => task)}> Add task {task} </button></div>
     </form>
+    )
+}
+
+export default FormInputTask
+```
+B. Into App.jsx: 
+
+At the begining: 
+```
+import FormInputTask from './FormInputTask'
+```
+- after return <> wherever you want.
+
+```
+ <FormInputTask></FormInputTask>
+
+```
+
+This is the complete code: 
+
+```
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
+import './FormInputTask'
+import FormInputTask from './FormInputTask'
+
+function App() {
+  const [count, setCount] = useState('')
+
+  return (
+    <>
+      
+      <h1>To Do List Exercise</h1>
+     
+      <FormInputTask></FormInputTask>
+
+      
+
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+
+        <h3>Vite + React</h3>
+      <div>
+        <a href="https://vitejs.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+      </div>
+    </>
+   
+  )
+}
+
+export default App
+
+```
+##2nd POINT: Un componente List que recorra listas de items
+
+
+Create List.jsx file. This is the content of List.jsx
+
+This is the syntax without mapping: 
+
+```
+function List() {
+ 
+    return <section>
+        <p>Here goes an item list</p>
+        <ul>
+        <Item name="Task name">
+        </ul>
+    </section>  
+    
+}
+```
+Incluir la lista en el componente FormInputTask.jsx
+
+```
+function FormInputTask ()  {
+    const [task, setTask] = useState('')
+    return (
+        <form>
+        <label>This is the field to add a new task:</label>
+        <div><input type="text" /></div>
+        <div><button onClick={() => setTask((task) => task)}> Add task {task} </button></div>
+        <List></List>
+    </form>
+    )
+}
+```
+Esta sería la sintaxis en List.jsx modificada para que haga un mapeo que dibuje una lista de items. 
+```
+import React from 'react'
+import Item from './Item';
+
+const names = [
+    {name:"Task 1"},
+    {name:"Task 2"}
+]
+
+function List() {
+ 
+    return <section>
+        <p>Here goes an item list</p>
+        <ul>
+        {names.map((item,index) => <Item key={index} name={item.name}/>)}
+        </ul>
+    </section>  
+    
+}
+
+export default List
+```
+
+##3rd Step: Un componente Item o Card que contenga cada TO-DO
+
+Create Item.jsx file. This is the content: 
+
+```
+import React from "react";
+
+function Item(props) {
+    return (
+        <li>
+          {props.name}
+        </li>
+    );
+}
+
+export default Item;
+```
+
+Now, up to the return in the List syntax you add a function that paints the resul of the mapping function. The functiion has its own return. The List.jsx file looks so: 
+
+```
+import React from 'react'
+import Item from './Item';
+
+const names = [
+    {name:"Task 1"},
+    {name:"Task 2"}
+]
+
+function List() {
+ 
+    // Painting mapped items
+
+    const paintItems = () => {
+        return names.map((item,index) => <Item key={index} name={item.name}/>)
     }
 
-    // Se exporta para poderlo llamar desde App.jsx, que es el archivo principal
-    export default FormInputTask;
-    ```
-    b. En App.jsx:
+    return <section>
+    {paintItems()}
+    </section>  
+    
+}
 
-    // Para traer el formulario al archivo principal y que se dibuje en el DOM
-    ```
-    import FormInputTask from './FormInputTask'
-    ```
+export default List
+```
+And later put the map function into the paint function. Delete the first return and clean the function List() code. The code shows like that:
+
+```
+function List() {
+ 
+    // Painting mapped items
+
+    const paintItems = () => names.map((item,index) => 
+                                        <Item key={index} name={item.name}/>);
+    
+    return <section>
+        {paintItems()}
+    </section>  
+};
+```
+
+All the code (List.jsx): 
+
+```
+import React from 'react'
+import Item from './Item';
+
+const names = [
+    {name:"Task 1"},
+    {name:"Task 2"}
+]
+
+function List() {
+ 
+    // Painting mapped items
+
+    const paintItems = () => names.map((item,index) => 
+                                        <Item key={index} name={item.name}/>);
+    
+    return <section>
+
+        {paintItems()}
+        
+    </section>  
+};
+
+export default List
+```
+
+It looks like that on the browser (I changed some styles): 
+![alt text](./img_readme/3rd_step.png)
+
+
+##4rd Step: Botón CLEAR para borrar todas las tareas
+
+
+
+**Comandos para crear carpetas: 
+```
+npx crcf src/components/Header MainComponent Footer -j -f
+```
+
+```
+npx crcf src/components/MainComponent/TravelList -j -f
+```
+
+```
+npx crcf src/components/MainComponent/TravelList/TravelItem -j -f
+```
+
+```
+npx crcf src/components/Header/Nav -j -f
+```
+rfce (en VisualStudioCode lo escribes, das a intro y te crea la sintaxis estándar de un componente funcional)
+
+**Repositorio de ejemplos de clase: 
+https://github.com/TheBridge-FullStackDeveloper/fs-ft-feb24-React-examples.git
+
+**Creat React Component Folder
+
+https://www.npmjs.com/package/create-react-component-folder
 
 
 
