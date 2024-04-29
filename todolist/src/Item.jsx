@@ -5,6 +5,7 @@ function Item(props) {
     return (
         <li>
           {props.name}
+          {props.addItem}
         </li>
     );
 }

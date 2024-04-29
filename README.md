@@ -45,6 +45,17 @@ Just now, by clicking on the link showed by the console, you can be your project
 
 ![first browser Vite image](./img_readme/03_1st_vite_screen.png)
 
+Install NPM UUID to manage the keys of the list.
+
+```
+npm i uuid
+```
+We will also install this extension to see the components on the browser: 
+
+React Developer Tools
+5.1.0 (4/15/2024)
+
+
 1. 
 a. Create file FormInputTask.jsx. Its content: 
 
@@ -285,8 +296,123 @@ It looks like that on the browser (I changed some styles):
 
 ##4rd Step: Botón CLEAR para borrar todas las tareas
 
+Fot these task we will use useState. An state is a litle memory space that the component has to save information.
+
+We will save Item data in a state. It would be, for example, a card or a table, or an image, or whatever you want.
+
+By these, we will be able to write items (saving data from an input type text), add, or delete using this memory, changing the state, puting, deleting or posting information into it. Also a counter or the kind component information you want to manage. It is also for saving user interaction and later do something with that information.
+
+We will use what is called state hook.
+
+A hook is an auxiliar function to do something in react, a react auxiliar function. 
+
+This is the standard syntax for useState Hook (where you see brackets = destructuring)
+
+```
+const [variable (or state), methodName(method_to_change_the_variable,the state, i.e. setValue)] = useState(intial_value_of_state);
+```
+useState return an array with two things: One is the variable (state) and the other the method to change this variable (this state).
+
+EACH TIME THE STATE CHANGE BY AN INTERACTION THE VIRTUAL DOM REFRESH.
+
+Later, we will use these: 
+
+```
+const handleAddClick = () => {
+  methodName (variable + 1) //i.e.
+}
+```
+Total syntax: 
+
+```
+const functionName = () => {
+
+  const [variable/*(state)*/, methodName] = useState(initialValue(initialState))
+
+  const handleName = () => {
+    methodName (what you apply to the state)
+  }
+
+  return (
+    <>
+    <button name='add' onclick={hadleName}> + </button>
+    <h1>The value is: {variable(state)}</h1>
+   </>
+  );
+
+}
+```
+
+Lets go with the exercise: create a CLEAR button to delete all tasks from the list.
+
+First we need to add this code at the begining of the List.jsx file to use useState, wich is a react Method:
+
+```
+import { useState } from 'react'
+```
+
+Next, we write these into de List function (in this case the state (list) will save an array that we can map):
+
+```
+const [list, setList] = useState(names);
+```
+
+And later, we change names.map.... to list.map... Finally it looks like these:
+
+```
+ const paintItems = () => list.map((item,index) => 
+                                        <Item key={index} name={item.name}/>);
+```
+Later, under paintItems function we define the method so: 
+
+```
+ const clearItems = () => setList([]);
+```
+
+Finally, we call the function clearItems into a button. We write these at the end of the return:
+
+```
+  <button onClick={clearItems}>Borrar todo</button>
+```
+
+The hole code in List.jsx look so:
+
+```
+import React from 'react'
+import { useState } from 'react'
+import Item from './Item'
 
 
+const names = [
+    {name:"Task 1"},
+    {name:"Task 2"}
+]
+
+function List() {
+
+    const [list, setList] = useState(names);// If empty  ([]). We charge the item names list we created to try. 
+
+    // Painting mapped items
+    const paintItems = () => list.map((item,index) => 
+                                        <Item key={index} name={item.name}/>);
+
+    const clearItems = () => setList([]);
+    
+    return <section>
+
+        {paintItems()}
+    <button onClick={clearItems}>Borrar todo</button>
+    </section>  
+};
+
+export default List
+```
+
+##4rd - Botón BORRAR, asociado a cada tarea, para poder borrar de manera independiente
+
+
+
+-------
 **Comandos para crear carpetas: 
 ```
 npx crcf src/components/Header MainComponent Footer -j -f

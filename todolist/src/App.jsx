@@ -2,26 +2,23 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import './FormInputTask'
-import FormInputTask from './FormInputTask'
-import List from './List'
-import Item from './Item'
-
+import MainComponent from './MainComponent'
 
 function App() {
-  const [count, setCount] = useState('')
-
+  const [count, setCount] = useState(0)
+  
   return (
     <>
       <header>
         <h1>To Do List Exercise</h1>
       </header>
       <main>
-        <FormInputTask>This is de form</FormInputTask>
+        <MainComponent>This is de form</MainComponent>
 
       </main>
-      <footer>
 
+      <footer>
+  {
         <div className="card">
           <button onClick={() => setCount((count) => count + 1)}>
             count is {count}
@@ -43,7 +40,7 @@ function App() {
           <p className="read-the-docs">
             Click on the Vite and React logos to learn more
           </p>
-        </div>
+        </div> }
       </footer>
     </>
 
